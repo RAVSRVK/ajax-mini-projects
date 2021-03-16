@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	 <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <title>Covid API</title>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+</head>
+<style >
+	.header{
+		background-color: teal;
+		padding :10px;
+		margin-bottom: 100px
+	}
+	footer{
+		background-color: rgb(1,222,27);
+		padding: 20px;
+	}
+	body{
+		background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+	}
+</style>
+<body>
+<div class="header">
+<h1 class="text-center" >Covid stats</h1> 
+	
+</div>
+
+<div class="container">
+	<table id="covidtable" class="table table-bordered ">
+		<thead>
+			<tr>
+				<th>Country</th>
+				<th>Total cases</th><th>recovered</th><th>Deaths</th>
+			</tr>
+		</thead>
+		<tbody id="tablebody">
+		
+		</tbody>
+		
+	</table>
+	
+</div>
+<footer class="text-center">
+	<p>Designed and Developed by</p>
+	<p>R.A.V.S.R.Vamsi Krishna</p>
+</footer>
+
+</body>
+</html>
+<script>
+	var countries=[]
+	$.ajax({
+		type:'get',
+		url:"https://api.covid19api.com/summary",
+		dataType:"json",
+		success:function(response){
+			countries=response.Countries
+			updatetable(countries);
+		}
+
+	});
+	updatetable=(countries)=>
+	{
+		for(country of countries)
+		{
+			let newrow="<tr><td>"+country.Country+"</td><td>"+country.TotalConfirmed+"</td><td>"+country.TotalRecovered+"</td><td>"+country.TotalDeaths+"</td></tr>"
+			$("#tablebody").append(newrow)
+		}
+		$("#covidtable").DataTable();
+	}
+
+</script>
